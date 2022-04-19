@@ -3,9 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from '@app/interceptor/http-exception-filter';
+import { DatabaseModule } from './database.module';
 
 @Module({
   imports: [
+    DatabaseModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         HOST: Joi.string().required(),

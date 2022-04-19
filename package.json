@@ -31,6 +31,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^8.0.3",
     "@types/aws-sdk": "^2.7.0",
     "@types/passport-local": "^1.0.34",
     "aws-sdk": "^2.1101.0",
@@ -38,9 +39,11 @@
     "helmet": "^5.0.2",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.6"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
