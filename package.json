@@ -1,8 +1,8 @@
 {
-  "name": "boilerplate-mmutante-hexagonal",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "boilerplate-hexagonal",
+  "version": "1.0.0",
+  "description": "Project of Paradigms Programation (Backend)",
+  "author": "Arthur Quezada Rivera",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -19,10 +19,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:create": "ts-node ./node_modules/typeorm/cli -f ./ormconfig.json migration:create -n",
-    "migration:generate": "yarn build && ts-node ./node_modules/typeorm/cli -f ./ormconfig.json migration:generate -n",
-    "migration:run": "yarn build && ts-node node_modules/typeorm/cli.js migration:run --config ./ormconfig.json",
-    "migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./ormconfig.json"
+    "generate-schema": "cat src/infrastructure/*/*.prisma src/infrastructure/persistence/prisma/*/*.prisma > prisma/schema.prisma",
+    "migrate": "yarn generate-schema && prisma migrate dev --preview-feature npm_config_name && prisma generate"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -31,7 +29,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
-    "@nestjs/typeorm": "^8.0.3",
+    "@prisma/client": "^3.15.2",
     "@types/aws-sdk": "^2.7.0",
     "@types/passport-local": "^1.0.34",
     "aws-sdk": "^2.1101.0",
@@ -40,10 +38,10 @@
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "pg": "^8.7.3",
+    "prisma": "^3.15.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0",
-    "typeorm": "^0.3.6"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
@@ -91,5 +89,12 @@
     "@infrastructure": "infrastructure",
     "@libs": "libs",
     "@use-case": "use-case"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }

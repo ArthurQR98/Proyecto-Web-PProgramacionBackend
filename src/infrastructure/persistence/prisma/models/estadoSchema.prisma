@@ -1,0 +1,5 @@
+model Estado {
+    id         Int          @id @default(autoincrement())
+    nombre     String
+    estudiante Estudiante[]
+}

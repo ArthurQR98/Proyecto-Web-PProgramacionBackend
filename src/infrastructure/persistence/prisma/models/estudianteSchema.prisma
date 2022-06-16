@@ -1,0 +1,21 @@
+model Estudiante {
+    id          Int        @id @default(autoincrement())
+    codigo      String
+    nombres     String
+    apellidos   String
+    dni         String     @unique
+    direccion   String
+    sexo        Sexo
+    nroTelefono String
+    edad        Int?
+    estado      Estado     @relation(fields: [estadoId], references: [id])
+    estadoId    Int
+    matricula   Matricula?
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime?  @updatedAt
+}
+
+enum Sexo {
+    M
+    F
+}

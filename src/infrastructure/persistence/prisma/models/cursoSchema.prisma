@@ -1,0 +1,12 @@
+model Curso {
+    id         Int         @id @default(autoincrement())
+    nombre     String
+    creditos   Int
+    nHoras     Int
+    nDocente   String
+    periodo    Periodo     @relation(fields: [periodoId], references: [id])
+    periodoId  Int
+    programa   Programa    @relation(fields: [programaId], references: [id])
+    programaId Int
+    matriculas Matricula[] @relation(references: [id])
+}
