@@ -1,6 +1,8 @@
 # compiled output
 /dist
 /node_modules
+prisma/schema.prisma
+project.md
 
 # Logs
 logs

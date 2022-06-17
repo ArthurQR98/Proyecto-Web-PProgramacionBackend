@@ -3,6 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from '@app/interceptor/http-exception-filter';
+import { EstudiantesModule } from './estudiante.module';
+import { CursoModule } from './curso.module';
+import { MatriculaModule } from './matricula.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { HttpExceptionFilter } from '@app/interceptor/http-exception-filter';
         AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
       }),
     }),
+    EstudiantesModule,
+    CursoModule,
+    MatriculaModule,
   ],
   controllers: [],
   providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter }],
