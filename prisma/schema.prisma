@@ -28,7 +28,7 @@ model Estado {
 }
 model Estudiante {
     id          Int        @id @default(autoincrement())
-    codigo      String
+    codigo      String     @unique
     nombres     String
     apellidos   String
     dni         String     @unique
