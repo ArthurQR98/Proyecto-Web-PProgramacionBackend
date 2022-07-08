@@ -4,7 +4,7 @@ import { Exception } from './exception';
 
 export function validImage(file) {
   const extension = file.mimetype.split('/')[1];
-  const extensionsValids = ['png', 'jpg', 'jpeg', 'webp'];
+  const extensionsValids = ['png', 'jpg', 'jpeg', 'webp', 'octet-stream'];
   if (extensionsValids.indexOf(extension) < 0) {
     throw Exception.new({
       code: Code.BAD_REQUEST_ERROR,
@@ -16,7 +16,7 @@ export function validImage(file) {
   if (file.size > SIZE_VALID_IMAGE) {
     throw Exception.new({
       code: Code.BAD_REQUEST_ERROR,
-      overrideMessage: `El peso de la imagen '${file.originalname}' no es permitido. [MAX 500KB]`,
+      overrideMessage: `El peso de la imagen '${file.originalname}' no es permitido. [MAX 1 MegaByte]`,
     });
   }
 }

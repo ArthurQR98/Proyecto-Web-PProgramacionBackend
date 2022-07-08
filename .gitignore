@@ -2,7 +2,8 @@
 /dist
 /node_modules
 prisma/schema.prisma
-project.md
+project.txt
+.vscode
 
 # Logs
 logs

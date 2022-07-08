@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -15,11 +16,15 @@ model Curso {
     creditos   Int
     nHoras     Int
     nDocente   String
+    url_image  String?
+    key_image  String?
     periodo    Periodo     @relation(fields: [periodoId], references: [id])
     periodoId  Int
     programa   Programa    @relation(fields: [programaId], references: [id])
     programaId Int
-    matriculas Matricula[] @relation(references: [id])
+    matriculas Matricula[] @relation()
+
+    @@index([nombre])
 }
 model Estado {
     id         Int          @id @default(autoincrement())
@@ -36,11 +41,15 @@ model Estudiante {
     sexo        Sexo
     nroTelefono String
     edad        Int?
+    url_image   String?
+    key_image   String?
     estado      Estado     @relation(fields: [estadoId], references: [id])
     estadoId    Int
     matricula   Matricula?
     createdAt   DateTime   @default(now())
     updatedAt   DateTime?  @updatedAt
+
+    @@index([nombres, apellidos])
 }
 
 enum Sexo {
@@ -49,11 +58,11 @@ enum Sexo {
 }
 model Matricula {
     id           Int        @id @default(autoincrement())
-    estado       String
+    estado       String     @default("REGISTRADO POR WEB")
     fecha        DateTime   @default(now())
     estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
-    estudianteId Int
-    cursos       Curso[]    @relation(references: [id])
+    estudianteId Int        @unique
+    cursos       Curso[]    @relation()
 }
 model Periodo {
     id          Int     @id @default(autoincrement())

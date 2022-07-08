@@ -30,5 +30,6 @@ export class CreateStudentDto {
   @IsOptional()
   edad: number;
 
+  @IsOptional()
   estado: number;
 }

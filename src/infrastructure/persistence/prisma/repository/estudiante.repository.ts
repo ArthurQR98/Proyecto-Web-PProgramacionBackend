@@ -3,8 +3,9 @@ import { StudentRepositoryPort } from '@domain/estudiante/port/persistence/estud
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import { Inject } from '@nestjs/common';
 import * as uniqid from 'uniqid';
-import { Estudiante } from '@prisma/client';
+import { Estudiante, Prisma } from '@prisma/client';
 import { FindStudentPort } from '@domain/estudiante/port/use-case/obtener-estudiante';
+import { createPaginator, PaginatedResult } from 'prisma-pagination';
 
 export class StudentRepository implements StudentRepositoryPort {
   constructor(
@@ -12,21 +13,45 @@ export class StudentRepository implements StudentRepositoryPort {
     private readonly prismaService: PrismaService,
   ) {}
 
+  private paginate = createPaginator({ perPage: 9 });
+
   async findStudents({
     status,
-    skip,
-    take,
-  }: FindStudentPort): Promise<Estudiante[]> {
-    return this.prismaService.estudiante.findMany({
-      where: {
-        estadoId: status,
+    search,
+    page,
+  }: FindStudentPort): Promise<PaginatedResult<Estudiante>> {
+    return this.paginate<Estudiante, Prisma.EstudianteFindManyArgs>(
+      this.prismaService.estudiante,
+      {
+        where: {
+          OR: [
+            {
+              nombres: {
+                contains: search,
+                mode: 'insensitive', //filtering is case-sensitive.
+              },
+            },
+            {
+              apellidos: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            },
+            {
+              codigo: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            },
+          ],
+          estadoId: status,
+        },
+        include: {
+          estado: true,
+        },
       },
-      include: {
-        estado: true,
-      },
-      skip: take * (skip - 1),
-      take,
-    });
+      { page },
+    );
   }
 
   async findStudentById(id: number): Promise<Estudiante> {
@@ -51,7 +76,7 @@ export class StudentRepository implements StudentRepositoryPort {
     });
   }
 
-  async storeStudent(payload: CreateStudentDto): Promise<Estudiante> {
+  async storeStudent(payload): Promise<Estudiante> {
     const estado = await this.prismaService.estado.findUnique({
       where: {
         id: payload.estado,

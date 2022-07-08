@@ -1,1 +1,1 @@
-export const SIZE_VALID_IMAGE = 500000; //5 MegaBytes
+export const SIZE_VALID_IMAGE = 1000000; // bytes <- 1000 KB

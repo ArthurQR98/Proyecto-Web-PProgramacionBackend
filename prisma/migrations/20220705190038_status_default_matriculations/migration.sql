@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Matricula" ALTER COLUMN "estado" SET DEFAULT E'REGISTRADO POR WEB';

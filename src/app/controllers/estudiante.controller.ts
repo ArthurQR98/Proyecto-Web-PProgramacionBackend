@@ -11,8 +11,10 @@ import {
   Put,
   Query,
   Res,
-  UsePipes,
-  ValidationPipe,
+  UploadedFile,
+  UseInterceptors,
+  // UsePipes,
+  // ValidationPipe,
 } from '@nestjs/common';
 import { StudentTokens } from '@domain/estudiante/token';
 import { CreateStudent } from '@use-case/estudiante/crear_estudiante';
@@ -20,7 +22,8 @@ import { CreateStudentDto } from '@app/dtos/estudiante/registro.estudiante.dto';
 import { FindStudents } from '@use-case/estudiante/obtener_estudiante';
 import { UpdateStudent } from '@use-case/estudiante/actualizar_estudiante';
 import { DeleteStudent } from '@use-case/estudiante/eliminar_estudiante';
-import { FindStudentById } from '../../use-case/estudiante/obtener_estudiantePorId';
+import { FindStudentById } from '@use-case/estudiante/obtener_estudiantePorId';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('student')
 export class EstudianteController {
@@ -38,12 +41,18 @@ export class EstudianteController {
   ) {}
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('image'))
   public async updatedStudent(
     @Param('id', ParseIntPipe) id,
     @Body() payload: CreateStudentDto,
     @Res() res,
+    @UploadedFile() image?: Express.Multer.File,
   ) {
-    const students = await this.updateStudent.execute({ id, data: payload });
+    const students = await this.updateStudent.execute({
+      id,
+      data: payload,
+      image,
+    });
     res.send({
       code: 200,
       success: true,
@@ -72,9 +81,13 @@ export class EstudianteController {
   }
 
   @Post()
-  @UsePipes(ValidationPipe)
-  public async createStudent(@Body() payload: CreateStudentDto, @Res() res) {
-    const student = await this.registerStudent.execute(payload);
+  @UseInterceptors(FileInterceptor('image'))
+  public async createStudent(
+    @Body() payload: CreateStudentDto,
+    @Res() res,
+    @UploadedFile() image?: Express.Multer.File,
+  ) {
+    const student = await this.registerStudent.execute(image, payload);
     res.send({
       code: 201,
       success: true,
@@ -86,19 +99,13 @@ export class EstudianteController {
   @Get()
   public async students(
     @Query('status', new DefaultValuePipe(1), ParseIntPipe) status,
-    @Query('skip', new DefaultValuePipe(1), ParseIntPipe) skip,
-    @Query('take', new DefaultValuePipe(20), ParseIntPipe) take,
-    @Res() res,
+    @Query('search', new DefaultValuePipe('')) search,
+    @Query('page', new DefaultValuePipe(1)) page,
   ) {
-    const students = await this.findStudents.execute({
+    return this.findStudents.execute({
       status,
-      skip,
-      take,
-    });
-    res.send({
-      code: 200,
-      success: true,
-      students,
+      search,
+      page,
     });
   }
 }

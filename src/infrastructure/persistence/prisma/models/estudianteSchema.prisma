@@ -8,11 +8,15 @@ model Estudiante {
     sexo        Sexo
     nroTelefono String
     edad        Int?
+    url_image   String?
+    key_image   String?
     estado      Estado     @relation(fields: [estadoId], references: [id])
     estadoId    Int
     matricula   Matricula?
     createdAt   DateTime   @default(now())
     updatedAt   DateTime?  @updatedAt
+
+    @@index([nombres, apellidos])
 }
 
 enum Sexo {

@@ -5,11 +5,12 @@ import { Module, Provider } from '@nestjs/common';
 import { CreateStudent } from '@use-case/estudiante/crear_estudiante';
 import { StudentRepository } from '../persistence/prisma/repository/estudiante.repository';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
-import { FindStudents } from '../../use-case/estudiante/obtener_estudiante';
-import { FindStudentById } from '../../use-case/estudiante/obtener_estudiantePorId';
-import { FindStudentByCode } from '../../use-case/estudiante/obtener_estudiantePorCode';
+import { FindStudents } from '@use-case/estudiante/obtener_estudiante';
+import { FindStudentById } from '@use-case/estudiante/obtener_estudiantePorId';
+import { FindStudentByCode } from '@use-case/estudiante/obtener_estudiantePorCode';
 import { UpdateStudent } from '@use-case/estudiante/actualizar_estudiante';
 import { DeleteStudent } from '@use-case/estudiante/eliminar_estudiante';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const persistenceProvider: Provider[] = [
   {
@@ -21,8 +22,9 @@ const persistenceProvider: Provider[] = [
 const useCaseProvider: Provider[] = [
   {
     provide: StudentTokens.RegisterStudentUseCase,
-    useFactory: (studentRepository) => new CreateStudent(studentRepository),
-    inject: [StudentTokens.Repository],
+    useFactory: (studentRepository, configService) =>
+      new CreateStudent(studentRepository, configService),
+    inject: [StudentTokens.Repository, ConfigService],
   },
   {
     provide: StudentTokens.FindStudentsUseCase,
@@ -41,18 +43,20 @@ const useCaseProvider: Provider[] = [
   },
   {
     provide: StudentTokens.UpdateStudentUseCase,
-    useFactory: (studentRepository) => new UpdateStudent(studentRepository),
-    inject: [StudentTokens.Repository],
+    useFactory: (studentRepository, configService) =>
+      new UpdateStudent(studentRepository, configService),
+    inject: [StudentTokens.Repository, ConfigService],
   },
   {
     provide: StudentTokens.DeleteStudentUseCase,
-    useFactory: (studentRepository) => new DeleteStudent(studentRepository),
-    inject: [StudentTokens.Repository],
+    useFactory: (studentRepository, configService) =>
+      new DeleteStudent(studentRepository, configService),
+    inject: [StudentTokens.Repository, ConfigService],
   },
 ];
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, ConfigModule],
   controllers: [EstudianteController],
   providers: [...persistenceProvider, ...useCaseProvider, PrismaService],
 })
