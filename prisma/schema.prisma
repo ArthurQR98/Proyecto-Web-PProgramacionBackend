@@ -2,14 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
+
 model Curso {
     id         Int         @id @default(autoincrement())
     nombre     String
@@ -26,11 +26,13 @@ model Curso {
 
     @@index([nombre])
 }
+
 model Estado {
     id         Int          @id @default(autoincrement())
     nombre     String
     estudiante Estudiante[]
 }
+
 model Estudiante {
     id          Int        @id @default(autoincrement())
     codigo      String     @unique
@@ -56,19 +58,22 @@ enum Sexo {
     M
     F
 }
+
 model Matricula {
     id           Int        @id @default(autoincrement())
     estado       String     @default("REGISTRADO POR WEB")
     fecha        DateTime   @default(now())
-    estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
+    estudiante   Estudiante @relation(fields: [estudianteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     estudianteId Int        @unique
     cursos       Curso[]    @relation()
 }
+
 model Periodo {
     id          Int     @id @default(autoincrement())
     descripcion String
     cursos      Curso[]
 }
+
 model Programa {
     id     Int     @id @default(autoincrement())
     nombre String  @unique

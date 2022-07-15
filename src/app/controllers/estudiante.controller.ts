@@ -56,6 +56,7 @@ export class EstudianteController {
     res.send({
       code: 200,
       success: true,
+      message: 'Actualizado correctamente',
       students,
     });
   }
@@ -66,6 +67,7 @@ export class EstudianteController {
     res.send({
       code: 200,
       success: true,
+      message: 'Eliminado correctamente',
       students,
     });
   }

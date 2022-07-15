@@ -54,6 +54,7 @@ export class CursoController {
     res.send({
       code: 200,
       success: true,
+      message: 'Actualizado correctamente',
       course,
     });
   }
@@ -64,6 +65,7 @@ export class CursoController {
     res.send({
       code: 200,
       success: true,
+      message: 'Eliminado correctamente',
       course,
     });
   }

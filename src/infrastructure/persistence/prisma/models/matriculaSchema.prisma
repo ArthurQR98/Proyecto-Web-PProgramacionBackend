@@ -2,7 +2,7 @@ model Matricula {
     id           Int        @id @default(autoincrement())
     estado       String     @default("REGISTRADO POR WEB")
     fecha        DateTime   @default(now())
-    estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
+    estudiante   Estudiante @relation(fields: [estudianteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     estudianteId Int        @unique
     cursos       Curso[]    @relation()
 }
