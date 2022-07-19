@@ -1,9 +1,9 @@
 # compiled output
 /dist
 /node_modules
-prisma/schema.prisma
-project.txt
 .vscode
+.env
+project.txt
 
 # Logs
 logs
