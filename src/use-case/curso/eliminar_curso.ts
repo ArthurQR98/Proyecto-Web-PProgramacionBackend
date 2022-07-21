@@ -8,12 +8,12 @@ import { Curso } from '@prisma/client';
 
 export class DeleteCourse implements UseCase<number, Partial<Curso>> {
   constructor(
-    private readonly studentRepository: CourseRepositoryPort,
+    private readonly courseRepository: CourseRepositoryPort,
     private readonly configService: ConfigService,
   ) {}
 
   async execute(payload: number): Promise<Partial<Curso>> {
-    const course = await this.studentRepository.findCourseById(payload);
+    const course = await this.courseRepository.findCourseById(payload);
     if (!course) {
       throw Exception.new({
         code: Code.NOT_FOUND_ERROR,
@@ -23,6 +23,6 @@ export class DeleteCourse implements UseCase<number, Partial<Curso>> {
     if (course.url_image && course.key_image) {
       await deleteImage(course.key_image, this.configService);
     }
-    return this.studentRepository.deleteCourse(payload);
+    return this.courseRepository.deleteCourse(payload);
   }
 }

@@ -45,7 +45,7 @@ const useCaseProvider: Provider[] = [
     provide: CourseTokens.DeleteCourseUseCase,
     useFactory: (courseRepository, configService) =>
       new DeleteCourse(courseRepository, configService),
-    inject: [CourseTokens.Repository],
+    inject: [CourseTokens.Repository, ConfigService],
   },
 ];
 
