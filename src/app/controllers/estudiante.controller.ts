@@ -22,8 +22,8 @@ import { CreateStudentDto } from '@app/dtos/estudiante/registro.estudiante.dto';
 import { FindStudents } from '@use-case/estudiante/obtener_estudiante';
 import { UpdateStudent } from '@use-case/estudiante/actualizar_estudiante';
 import { DeleteStudent } from '@use-case/estudiante/eliminar_estudiante';
-import { FindStudentById } from '@use-case/estudiante/obtener_estudiantePorId';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { FindStudentByCode } from '@use-case/estudiante/obtener_estudiantePorCode';
 
 @Controller('student')
 export class EstudianteController {
@@ -32,8 +32,8 @@ export class EstudianteController {
     private readonly registerStudent: CreateStudent,
     @Inject(StudentTokens.FindStudentsUseCase)
     private readonly findStudents: FindStudents,
-    @Inject(StudentTokens.FindStudentByIdUseCase)
-    private readonly findStudentById: FindStudentById,
+    @Inject(StudentTokens.FindStudentByCodeUseCase)
+    private readonly findStudentByCode: FindStudentByCode,
     @Inject(StudentTokens.UpdateStudentUseCase)
     private readonly updateStudent: UpdateStudent,
     @Inject(StudentTokens.DeleteStudentUseCase)
@@ -72,13 +72,13 @@ export class EstudianteController {
     });
   }
 
-  @Get(':id')
-  public async getStudent(@Param('id', ParseIntPipe) id, @Res() res) {
-    const students = await this.findStudentById.execute(id);
+  @Get(':code')
+  public async getStudent(@Param('code') id, @Res() res) {
+    const student = await this.findStudentByCode.execute(id);
     res.send({
       code: 200,
       success: true,
-      students,
+      student,
     });
   }
 

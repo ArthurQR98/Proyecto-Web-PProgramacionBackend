@@ -23,6 +23,7 @@ export class EnrollRepository implements EnrollRepositoryPort {
       {
         include: {
           estudiante: true,
+          cursos: true,
         },
       },
       { page },
@@ -44,16 +45,40 @@ export class EnrollRepository implements EnrollRepositoryPort {
     });
   }
 
-  storeEnroll({
-    estudianteId,
+  findEnrollByProgram(programId: number): Promise<Matricula[]> {
+    return this.prismaService.matricula.findMany({
+      where: {
+        cursos: {
+          some: {
+            programaId: programId,
+          },
+        },
+      },
+      include: {
+        estudiante: true,
+        cursos: {
+          include: {
+            periodo: true,
+            programa: true,
+          },
+        },
+      },
+    });
+  }
+
+  async storeEnroll({
+    estudianteCode,
     cursosIds,
   }: CreateMatriculaDto): Promise<Matricula> {
     const courses = cursosIds.map((course) => ({
       id: course,
     }));
+    const estudiante = await this.prismaService.estudiante.findUnique({
+      where: { codigo: estudianteCode },
+    });
     return this.prismaService.matricula.create({
       data: {
-        estudianteId,
+        estudianteId: estudiante.id,
         cursos: {
           connect: courses,
         },

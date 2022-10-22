@@ -85,7 +85,7 @@ export class StudentRepository implements StudentRepositoryPort {
     return this.prismaService.estudiante.create({
       data: {
         ...payload,
-        codigo: uniqid.time(null, '-student'),
+        codigo: uniqid.time(null, '-st'),
         estado: {
           connect: {
             id: estado.id,

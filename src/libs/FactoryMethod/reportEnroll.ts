@@ -1,14 +1,23 @@
+import { Product } from './product';
 import PDF from 'pdfkit-table';
-import { ModelData } from './types';
+import { ModelData } from '@libs/common/types';
 
-export class ReportEnroll extends PDF {
+export class ReportEnroll extends PDF implements Product {
   data: ModelData;
-  constructor(data, options?: PDFKit.PDFDocumentOptions | undefined) {
-    super(options);
+  constructor(data) {
+    super();
     this.data = data;
   }
 
-  title() {
+  operation() {
+    this.title();
+    this.subTitle();
+    this.fields();
+    this.createTable();
+    return this;
+  }
+
+  title(): void {
     this.font('Times-Bold').text(
       'INSTITUTO TECNOLOGÍCO PÚBLICO FLORENCIA DE MORA',
       {
@@ -36,7 +45,7 @@ export class ReportEnroll extends PDF {
     this.fontSize(8).text(`FECHA  : ${this.data.fecha}`).moveDown(5);
   }
 
-  async createTable() {
+  createTable() {
     const table = {
       headers: ['Periodo', 'Asignatura', 'Creditos', 'Docente', 'Nro. Horas'],
       rows: this.data.cursos.map((course) => [
@@ -47,7 +56,7 @@ export class ReportEnroll extends PDF {
         `${course.nHoras}`,
       ]),
     };
-    await this.table(table, {
+    this.table(table, {
       columnsSize: [50, 150, 50, 150, 50],
     });
   }

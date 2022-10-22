@@ -13,8 +13,8 @@ export class CreateEnroll implements UseCase<CreateMatriculaDto, Matricula> {
   ) {}
 
   async execute(payload: CreateMatriculaDto): Promise<Matricula> {
-    const student = await this.studentRepository.findStudentById(
-      payload.estudianteId,
+    const student = await this.studentRepository.findStudentByCode(
+      payload.estudianteCode,
     );
     if (!student) {
       throw Exception.new({

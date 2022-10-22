@@ -21,6 +21,7 @@ import { FindEnroll } from '@use-case/matricula/obtener_matriculas';
 import { UpdateEnroll } from '@use-case/matricula/actualizar.matricula';
 import { DeleteEnroll } from '@use-case/matricula/eliminar.matricula';
 import { GenerateReportEnroll } from '@use-case/matricula/generar.reporte';
+import { GenerateReportByProgram } from '@use-case/matricula/generar.reporte.programa';
 
 @Controller('enroll')
 export class MatriculaController {
@@ -35,6 +36,8 @@ export class MatriculaController {
     private readonly removeEnroll: DeleteEnroll,
     @Inject(EnrollTokens.ReportEnrollUseCase)
     private readonly reportEnroll: GenerateReportEnroll,
+    @Inject(EnrollTokens.ReportEnrollByProgramUseCase)
+    private readonly reportByProgram: GenerateReportByProgram,
   ) {}
 
   @Delete(':id')
@@ -66,6 +69,14 @@ export class MatriculaController {
   @Post('report/:id')
   public async generateReportEnroll(@Param('id', ParseIntPipe) id, @Res() res) {
     return this.reportEnroll.execute(id, res);
+  }
+
+  @Post('report/program/:programId')
+  public async generateReportByProgram(
+    @Param('programId', ParseIntPipe) id,
+    @Res() res,
+  ) {
+    return this.reportByProgram.execute(id, res);
   }
 
   @Post()

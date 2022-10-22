@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateMatriculaDto {
-  @IsNumber({}, { message: 'El id del estudiante debe ser un número' })
+  @IsString({ message: 'El codigo del estudiante debe ser un texto' })
   @IsNotEmpty({ message: 'El estudiante es obligatorio' })
-  estudianteId: number;
+  estudianteCode: string;
 
   @IsNumber({}, { each: true })
   cursosIds: number[];

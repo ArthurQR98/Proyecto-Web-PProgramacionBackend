@@ -10,6 +10,7 @@ import { UpdateEnroll } from '@use-case/matricula/actualizar.matricula';
 import { CreateEnroll } from '@use-case/matricula/crear_matricula';
 import { DeleteEnroll } from '@use-case/matricula/eliminar.matricula';
 import { GenerateReportEnroll } from '@use-case/matricula/generar.reporte';
+import { GenerateReportByProgram } from '@use-case/matricula/generar.reporte.programa';
 import { FindEnroll } from '@use-case/matricula/obtener_matriculas';
 
 const persistenceProvider: Provider[] = [
@@ -49,6 +50,12 @@ const useCaseProvider: Provider[] = [
     provide: EnrollTokens.ReportEnrollUseCase,
     useFactory: (enrollRepository) =>
       new GenerateReportEnroll(enrollRepository),
+    inject: [EnrollTokens.Repository],
+  },
+  {
+    provide: EnrollTokens.ReportEnrollByProgramUseCase,
+    useFactory: (enrollRepository) =>
+      new GenerateReportByProgram(enrollRepository),
     inject: [EnrollTokens.Repository],
   },
 ];
