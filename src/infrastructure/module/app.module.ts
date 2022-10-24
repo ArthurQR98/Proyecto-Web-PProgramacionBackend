@@ -6,6 +6,7 @@ import { HttpExceptionFilter } from '@app/interceptor/http-exception-filter';
 import { EstudiantesModule } from './estudiante.module';
 import { CursoModule } from './curso.module';
 import { MatriculaModule } from './matricula.module';
+import { GatewayModule } from './gateway.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MatriculaModule } from './matricula.module';
     EstudiantesModule,
     CursoModule,
     MatriculaModule,
+    GatewayModule,
   ],
   controllers: [],
   providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter }],
